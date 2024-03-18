@@ -1,5 +1,5 @@
 
-# Kaablite Sorteerimise Tööriist
+# Kaablite sorteerimise tööriist
 
 See tööriist võimaldab kasutajatel sorteerida kaableid Exceli failides, pakkudes lihtsat ja interaktiivset kasutajaliidest töölehtede valimiseks ja andmete töötlemiseks.
 
