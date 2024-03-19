@@ -5,14 +5,14 @@ See tööriist võimaldab kasutajatel sorteerida kaableid vastavalt nende vahel�
 
 ## Tööpõhimõte
 
-# 1. **Suuna kontrollimine ja korrigeerimine**
+### 1. **Suuna kontrollimine ja korrigeerimine**
 Selleks, et tagada kaablite õige suund, luuakse sagedusloendur direction_counter. See loendur loeb, mitu korda iga punkt ("From" ja "To") esineb kogu andmestikus.
 Kui "To" punkti sagedus on suurem kui "From" punkti sagedus, tähendab see, et suund võib olla vale ja see korrigeeritakse vahetades "From" ja "To" väärtused.
-# 2. **Graafi loome ja kaablite marsruutide leidmine**
+### 2. **Graafi loome ja kaablite marsruutide leidmine**
 Andmetest luuakse graaf, kus iga kaabli alguspunkt ("From") on seotud selle lõpp-punktiga ("To"). See graaf esindab kaablite marsruute.
 Kasutatakse süvitsi otsingut (DFS), et leida kõik võimalikud marsruudid alates juurtest (alguspunktidest, mis ei esine ühegi kaabli lõpp-punktina) kuni lehtedeni (lõpp-punktid, millel ei ole järgnevat kaablit).
 Iga leitud marsruut lisatakse sorted_cables listi.
-# 3. **Sorteeritud kaablilistide koostamine**
+### 3. **Sorteeritud kaablilistide koostamine**
 Pärast kõigi marsruutide leidmist luuakse uus DataFrame sorted_cables_df, kuhu koondatakse kõik marsruutidel leitud kaablid järjestatult.
 Kaablite järjestamiseks kasutatakse leitud marsruutide järjekorda, tagades, et iga kaabli järel on kaabel, mis algab eelmise kaabli lõpp-punktist.
 
