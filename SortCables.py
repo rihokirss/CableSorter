@@ -1,6 +1,7 @@
 import pandas as pd
+import tkinter as tk
 from collections import defaultdict
-from tkinter import Tk, filedialog, Toplevel, Listbox, END
+from tkinter import Tk, filedialog, Toplevel, Listbox, messagebox, END
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 
@@ -114,3 +115,45 @@ if input_file_path:
     # Käivitab sorteerimise, kui on valitud sisendfail, tööleht ja väljundfail
     if sheet_name and output_file_path:
         sort_cables(input_file_path, sheet_name, output_file_path)
+
+##kontrollid
+     
+# Lae andmed
+df_input = pd.read_excel(input_file_path, sheet_name=sheet_name)
+df_output = pd.read_excel(output_file_path, sheet_name=sheet_name)
+
+# Kaablite kogus
+input_count = len(df_input)
+output_count = len(df_output)
+
+# Kasuta 'ID' veergu
+id_column = 'ID'
+
+# 2. Kontrolli, kas mõlemas failis on samad kaabli ID-d
+input_ids = set(df_input[id_column])
+output_ids = set(df_output[id_column])
+
+# Erinevused
+missing_in_output = input_ids.difference(output_ids)
+missing_in_input = output_ids.difference(input_ids)
+
+# 3. Kontrolli, kas eksisteerib kaableid ilma alguse ja lõputa
+# Peame muutma indekseerimise viisi, kasutades listi asemel set'i
+missing_start_or_end_in_input = df_input[df_input['From'].isna() | df_input['To'].isna()][id_column].tolist()
+missing_start_or_end_in_output = df_output[df_output['From'].isna() | df_output['To'].isna()][id_column].tolist()
+
+# Väljasta tulemused dialoogiaknas
+root = tk.Tk()
+root.withdraw() # Peidab tkinteri peamise akna
+
+message = (
+    f"Kaablite kogus algfailis: {input_count}\n"
+    f"Kaablite kogus väljundfailis: {output_count}\n\n"
+    f"Kaabli ID-d, mis on algfailis, kuid mitte väljundfailis: {missing_in_output}\n"
+    f"Kaabli ID-d, mis on väljundfailis, kuid mitte algfailis: {missing_in_input}\n\n"
+    f"Kaablite ID-d ilma alguse ja lõputa algfailis: {missing_start_or_end_in_input}\n"
+    f"Kaablite ID-d ilma alguse ja lõputa väljundfailis: {missing_start_or_end_in_output}"
+)
+
+messagebox.showinfo("Kontrolli Tulemused", message)
+
