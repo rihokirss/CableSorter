@@ -48,6 +48,4 @@ Tkinter peaks olema Pythoniga vaikimisi kaasas. Kui see puudub, võite vajada Py
 4. Määrake väljundfaili nimi ja asukoht.
 5. Programm sorteerib kaableid ja salvestab tulemused määratud väljundfaili.
 
----
 
-Loodud kasutajaliidese ja automatiseerimise hõlbustamiseks.
