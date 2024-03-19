@@ -1,7 +1,20 @@
 
 # Kaablite sorteerimise tööriist
 
-See tööriist võimaldab kasutajatel sorteerida kaableid Exceli failides, pakkudes lihtsat ja interaktiivset kasutajaliidest töölehtede valimiseks ja andmete töötlemiseks.
+See tööriist võimaldab kasutajatel sorteerida kaableid vastavalt nende vahelõikude kulgemisele algus ja lõpppunktide kaudu Exceli failides.
+
+## Tööpõhimõte
+
+1. **Suuna Kontrollimine ja Korrigeerimine**
+Selleks, et tagada kaablite õige suund, luuakse sagedusloendur direction_counter. See loendur loeb, mitu korda iga punkt ("From" ja "To") esineb kogu andmestikus.
+Kui "To" punkti sagedus on suurem kui "From" punkti sagedus, tähendab see, et suund võib olla vale ja see korrigeeritakse vahetades "From" ja "To" väärtused.
+2. **Graafi Loome ja Kaablite Marsruutide Leidmine**
+Andmetest luuakse graaf, kus iga kaabli alguspunkt ("From") on seotud selle lõpp-punktiga ("To"). See graaf esindab kaablite marsruute.
+Kasutatakse süvitsi otsingut (DFS), et leida kõik võimalikud marsruudid alates juurtest (alguspunktidest, mis ei esine ühegi kaabli lõpp-punktina) kuni lehtedeni (lõpp-punktid, millel ei ole järgnevat kaablit).
+Iga leitud marsruut lisatakse sorted_cables listi.
+3. **Sorteeritud Kaablite Koostamine**
+Pärast kõigi marsruutide leidmist luuakse uus DataFrame sorted_cables_df, kuhu koondatakse kõik marsruutidel leitud kaablid järjestatult.
+Kaablite järjestamiseks kasutatakse leitud marsruutide järjekorda, tagades, et iga kaabli järel on kaabel, mis algab eelmise kaabli lõpp-punktist.
 
 ## Funktsionaalsus
 
