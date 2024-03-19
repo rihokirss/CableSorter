@@ -51,17 +51,31 @@ def sort_cables(input_file_path, sheet_name, output_file_path):
         for i in range(len(path) - 1):
             # Võtke esimene vastav rida
             row = df[(df['From'] == path[i]) & (df['To'] == path[i+1])].iloc[0]
-            # Lisa see rida sorted_cables_df kasutades pd.concat
-            sorted_cables_df = pd.concat([sorted_cables_df, pd.DataFrame([row])], ignore_index=True)
+ 
+            # Eeldame, et sorted_cables_df on teie olemasolev DataFrame ja row on uus rida, mida soovite lisada
+            row_df = pd.DataFrame([row])  # Muudab rea DataFrame'iks
+
+            # Eemalda tühjad või NA veerud uuest DataFrame'ist
+            row_df.dropna(axis=1, how='all', inplace=True)
+
+            # Seejärel lisage see olemasolevale DataFrame'ile
+            sorted_cables_df = pd.concat([sorted_cables_df, row_df], ignore_index=True)
+
+
+            # Eemaldab duplikaadid, võttes arvesse algust ja lõppu
+            #sorted_cables_df = sorted_cables_df.drop_duplicates(subset=['From', 'To'], keep='first')
+            # Eemaldab duplikaadid, võttes arvesse ainult ID veergu
+            sorted_cables_df = sorted_cables_df.drop_duplicates(subset=['ID'], keep='first')
+
 
     book = load_workbook(input_file_path)
     sheet = book[sheet_name]
     column_widths = [max(len(str(cell.value)) for cell in col) for col in sheet.columns]
 
     with pd.ExcelWriter(output_file_path, engine='openpyxl') as writer:
-        sorted_cables_df.to_excel(writer, sheet_name='Sheet1', index=False)
+        sorted_cables_df.to_excel(writer, sheet_name=sheet_name, index=False)
         for i, width in enumerate(column_widths, start=1):
-            writer.sheets['Sheet1'].column_dimensions[get_column_letter(i)].width = width
+            writer.sheets[sheet_name].column_dimensions[get_column_letter(i)].width = width
 
 # Funktsioon töölehe valimiseks dialoogiaknast
 def choose_sheet(root, sheet_names):
